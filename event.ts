@@ -52,7 +52,7 @@ function joust(combatantOne: Knight, combatantTwo: Knight): joustResult {
 
     if (combatantOneResult.points == combatantTwoResult.points){
         combatantOnePerformance.accuracy > combatantTwoPerformance.accuracy ? winner = combatantOne : winner = combatantTwo
-    } else if (combatantOneResult.points > combatantOneResult.points){
+    } else if (combatantOneResult.points > combatantTwoResult.points){
         winner = combatantOne
     } else {
         winner = combatantTwo
@@ -75,7 +75,7 @@ function calculatePoints(combatant: Knight, combatantPerformance: combatantPerfo
     
     // accuracy ranges: 1-4 completely miss (no lance damage), 5-9 barely hit (1d4 lance damage and 1 point), 
     //                  10-14 solid hit (1d10 lance damage and 2 points), 15-19 great hit (1d15 lance damage 3 points), 20+ crit (auto destroy lance 5 points)
-    switch ((combatantPerformance.accuracy) % 5) {
+    switch (Math.floor((combatantPerformance.accuracy) / 5)) {
         case (0): 
             console.log(combatant.name + " missed... oof, no points")
             break;
@@ -103,7 +103,8 @@ function calculatePoints(combatant: Knight, combatantPerformance: combatantPerfo
 
     if (damage == 0) {
         damage = Math.floor(Math.random() * (damageDie + 1)) - modifier(combatantPerformance.strength) // strength performance: modifies damage
-    }
+        console.log(combatant.name + " does " + damage + " damage to their lance")
+    } 
     
     combatant.lance.hp <= damage && combatantPerformance.grip > 10 // grip low: drop lance (IF target hit, lance cannot break)
         ? () => { console.log(combatant.name + " broke their lance! 5 more points!");  points += 5 }
