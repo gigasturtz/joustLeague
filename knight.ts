@@ -6,13 +6,14 @@ type Knight = {
     accuracy: number,
     grip: number,
     fanciness: number,
-    vitality: Vitals
+    vitality: Vitals // not implemented
 }
 
 type Horse = {
+    name: string,
     speed: number,
     anxiety: number,
-    vitality: Vitals
+    vitality: Vitals // not implemented
 }
 
 type Vitals = {
@@ -23,6 +24,6 @@ type Vitals = {
 }
 
 type Lance = {
-    weight: number,
+    weight: number, // not implemented
     hp: number,
 }
