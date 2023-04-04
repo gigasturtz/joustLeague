@@ -1,4 +1,4 @@
-
+import { Knight, Horse, Lance, Vitals }from './knight'
 
 const treasureElipsis: Horse = {
     name: "Treasure Elipsis",
@@ -29,7 +29,7 @@ const standardLance: Lance = {
     hp: 10
 }
 
-export const combatants: Knight[] = [
+const combatants: Knight[] = [
     {
         name: "Fusar Hakor",
         mount: barrelsBottom,
@@ -61,3 +61,5 @@ export const combatants: Knight[] = [
         }
     }
 ]
+
+export default combatants

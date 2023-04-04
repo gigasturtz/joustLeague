@@ -1,8 +1,12 @@
-const express = require('express')
+import express from 'express'
 const app = express()
 const port = 3000
+import { doIt } from './event'
+
+doIt()
 
 app.get('/', (req, res) => {
+  doIt()
   res.send('Hello World!')
 })
 

@@ -27,3 +27,5 @@ type Lance = {
     weight: number, // not implemented
     hp: number,
 }
+
+export { Knight, Lance, Vitals, Horse }

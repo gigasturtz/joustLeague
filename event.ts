@@ -1,4 +1,5 @@
-import { combatants } from "./baseCombatants"
+import combatants from "./baseCombatants"
+import { Knight, Horse, Lance, Vitals }from './knight'
 
 type combatantResult = {
     points: number,
@@ -20,7 +21,8 @@ type joustResult = {
     combatantOne: Knight,
     combatantOneResult: combatantResult,
     combatantTwo: Knight,
-    combatantTwoResult: combatantResult
+    combatantTwoResult: combatantResult,
+    winner: Knight
 }
 
 
@@ -46,12 +48,23 @@ function joust(combatantOne: Knight, combatantTwo: Knight): joustResult {
         }
     }
 
+    let winner: Knight
 
+    if (combatantOneResult.points == combatantTwoResult.points){
+        combatantOnePerformance.accuracy > combatantTwoPerformance.accuracy ? winner = combatantOne : winner = combatantTwo
+    } else if (combatantOneResult.points > combatantOneResult.points){
+        winner = combatantOne
+    } else {
+        winner = combatantTwo
+    }
+
+    console.log(winner.name + " wins the joust!")
     return {
         combatantOne,
         combatantOneResult,
         combatantTwo,
         combatantTwoResult,
+        winner
     }
 }
 
@@ -64,20 +77,25 @@ function calculatePoints(combatant: Knight, combatantPerformance: combatantPerfo
     //                  10-14 solid hit (1d10 lance damage and 2 points), 15-19 great hit (1d15 lance damage 3 points), 20+ crit (auto destroy lance 5 points)
     switch ((combatantPerformance.accuracy) % 5) {
         case (0): 
+            console.log(combatant.name + " missed... oof, no points")
             break;
         case (1):
+            console.log(combatant.name + " barely hits, 1 point")
             damageDie = 4;
             points = 1
             break;
         case (2):
+            console.log(combatant.name + " hits solidly, 2 points")
             damageDie = 10;
             points = 2
             break;
         case (3):
+            console.log(combatant.name + " scores a great hit! 3 points")
             damageDie = 15;
             points = 3
             break;
         default: 
+            console.log(combatant.name + " CRIT! HOLY SHIT! 5 points!")
             damage = 10;
             points = 5
             break;
@@ -88,7 +106,7 @@ function calculatePoints(combatant: Knight, combatantPerformance: combatantPerfo
     }
     
     combatant.lance.hp <= damage && combatantPerformance.grip > 10 // grip low: drop lance (IF target hit, lance cannot break)
-        ? () => { console.log(combatant.name + " broke their lance!");  points += 5 }
+        ? () => { console.log(combatant.name + " broke their lance! 5 more points!");  points += 5 }
         : points
     return points
 }
@@ -119,3 +137,5 @@ function modifier(stat: number): number {
 export function doIt(): void {
     joust(combatants[0], combatants[1])
 }
+
+doIt()
