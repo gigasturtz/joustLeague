@@ -51,6 +51,7 @@ function joust(combatantOne: Knight, combatantTwo: Knight): joustResult {
     let winner: Knight
 
     if (combatantOneResult.points == combatantTwoResult.points){
+        console.log("Tied on points! Fanciness decides victory!")
         combatantOnePerformance.accuracy > combatantTwoPerformance.accuracy ? winner = combatantOne : winner = combatantTwo
     } else if (combatantOneResult.points > combatantTwoResult.points){
         winner = combatantOne
@@ -103,6 +104,7 @@ function calculatePoints(combatant: Knight, combatantPerformance: combatantPerfo
 
     if (damage == 0) {
         damage = Math.floor(Math.random() * (damageDie + 1)) - modifier(combatantPerformance.strength) // strength performance: modifies damage
+        damage < 0 ? damage = 1 : damage
         console.log(combatant.name + " does " + damage + " damage to their lance")
     } 
     
