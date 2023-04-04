@@ -76,7 +76,7 @@ function calculatePoints(combatant: Knight, combatantPerformance: combatantPerfo
     
     // accuracy ranges: 1-4 completely miss (no lance damage), 5-9 barely hit (1d4 lance damage and 1 point), 
     //                  10-14 solid hit (1d10 lance damage and 2 points), 15-19 great hit (1d15 lance damage 3 points), 20+ crit (auto destroy lance 5 points)
-    switch (Math.floor((combatantPerformance.accuracy) / 5)) {
+    switch (Math.floor((combatantPerformance.accuracy > 0 ? combatantPerformance.accuracy : 0) / 5)) {
         case (0): 
             console.log(combatant.name + " missed... oof, no points")
             break;
@@ -103,14 +103,19 @@ function calculatePoints(combatant: Knight, combatantPerformance: combatantPerfo
     }
 
     if (damage == 0) {
-        damage = Math.floor(Math.random() * (damageDie + 1)) - modifier(combatantPerformance.strength) // strength performance: modifies damage
+        damage = Math.floor(Math.random() * (damageDie + 1)) + modifier(combatantPerformance.strength) // strength performance: modifies damage
         damage < 0 ? damage = 1 : damage
         console.log(combatant.name + " does " + damage + " damage to their lance")
     } 
     
-    combatant.lance.hp <= damage && combatantPerformance.grip > 10 // grip low: drop lance (IF target hit, lance cannot break)
-        ? () => { console.log(combatant.name + " broke their lance! 5 more points!");  points += 5 }
-        : points
+    if (combatant.lance.hp <= damage) {
+        // grip low: drop lance (IF target hit, lance cannot break)
+        if (combatantPerformance.grip > 10) {
+        console.log(combatant.name + " broke their lance! 5 more points!")
+        points += 5 
+        }
+    }
+
     return points
 }
 
@@ -122,10 +127,10 @@ function combat(combatant: Knight): combatantPerformance {
         grip: roll(combatant.grip) + modifier(fanciness),
         fanciness
     }
-    console.log (combatant.name + " rolled a " + performance.strength + " on strength")
-    console.log (combatant.name + " rolled a " + performance.accuracy + " on accuracy")
-    console.log (combatant.name + " rolled a " + performance.grip + " on grip")
-    console.log (combatant.name + " rolled a " + performance.fanciness + " on fanciness")
+    console.log (combatant.name + " rolled a " + performance.strength + " on strength (" + modifier(performance.strength)+ ")")
+    console.log (combatant.name + " rolled a " + performance.accuracy + " on accuracy (" + modifier(performance.accuracy)+ ")")
+    console.log (combatant.name + " rolled a " + performance.grip + " on grip (" + modifier(performance.grip)+ ")")
+    console.log (combatant.name + " rolled a " + performance.fanciness + " on fanciness (" + modifier(performance.fanciness)+ ")")
     return performance
 }
 
