@@ -122,9 +122,9 @@ function calculatePoints(combatant: Knight, combatantPerformance: combatantPerfo
 function combat(combatant: Knight): combatantPerformance {
     let fanciness: number = roll(combatant.fanciness)    // fanciness: modifies the other 3 stats
     let performance : combatantPerformance = {
-        strength: roll(combatant.strength) + modifier(fanciness),
-        accuracy: roll(combatant.accuracy) + modifier(fanciness),
-        grip: roll(combatant.grip) + modifier(fanciness),
+        strength: roll(combatant.strength) + Math.floor(modifier(fanciness)/2),
+        accuracy: roll(combatant.accuracy) + Math.floor(modifier(fanciness)/2),
+        grip: roll(combatant.grip) + Math.floor(modifier(fanciness)/2),
         fanciness
     }
     console.log (combatant.name + " rolled a " + performance.strength + " on strength (" + modifier(performance.strength)+ ")")
