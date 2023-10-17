@@ -53,7 +53,7 @@ export function joust(combatantOne: Knight, combatantTwo: Knight): joustResult {
     let winner: Knight
 
     if (combatantOneResult.points == combatantTwoResult.points){
-        // console.log("Tied on points! Fanciness decides victory!")
+        console.log("Tied on points! Fanciness decides victory!")
         combatantOnePerformance.accuracy > combatantTwoPerformance.accuracy ? winner = combatantOne : winner = combatantTwo
     } else if (combatantOneResult.points > combatantTwoResult.points){
         winner = combatantOne
@@ -61,7 +61,7 @@ export function joust(combatantOne: Knight, combatantTwo: Knight): joustResult {
         winner = combatantTwo
     }
 
-    // console.log(winner.name + " wins the joust!")
+    console.log(winner.name + " wins the joust!")
     return {
         combatantOne,
         combatantOneResult,
@@ -77,28 +77,28 @@ function calculatePoints(combatant: Knight, combatantPerformance: combatantPerfo
     let damage: number = 0;
     
     // accuracy ranges: 1-4 completely miss (no lance damage), 5-9 barely hit (1d4 lance damage and 1 point), 
-    //                  10-14 solid hit (1d10 lance damage and 2 points), 15-19 great hit (1d15 lance damage 3 points), 20+ crit (auto destroy lance 5 points)
+    //                  10-14 solid hit (1d8 lance damage and 2 points), 15-19 great hit (1d12 lance damage 3 points), 20+ crit (auto destroy lance 5 points)
     switch (Math.floor((combatantPerformance.accuracy > 0 ? combatantPerformance.accuracy : 0) / 5)) {
         case (0): 
-            // console.log(combatant.name + " missed... oof, no points")
+            console.log(combatant.name + " missed... oof, no points")
             break;
         case (1):
-            // console.log(combatant.name + " barely hits, 1 point")
+            console.log(combatant.name + " barely hits, 1 point")
             damageDie = 4;
             points = 1
             break;
         case (2):
-            // console.log(combatant.name + " hits solidly, 2 points")
+            console.log(combatant.name + " hits solidly, 2 points")
             damageDie = 8;
             points = 2
             break;
         case (3):
-            // console.log(combatant.name + " scores a great hit! 3 points")
+            console.log(combatant.name + " scores a great hit! 3 points")
             damageDie = 12;
             points = 3
             break;
         default: 
-            // console.log(combatant.name + " CRIT! HOLY SHIT! 5 points!")
+            console.log(combatant.name + " CRIT! HOLY SHIT! 5 points!")
             damage = 99;
             points = 5
             break;
@@ -107,13 +107,13 @@ function calculatePoints(combatant: Knight, combatantPerformance: combatantPerfo
     if (damage == 0) {
         damage = Math.floor(Math.random() * (damageDie + 1)) + modifier(combatantPerformance.strength) // strength performance: modifies damage
         damage < 0 ? damage = 1 : damage
-        // console.log(combatant.name + " does " + damage + " damage to their lance")
+        console.log(combatant.name + " does " + damage + " damage to their lance")
     } 
     
     if (combatant.lance.hp <= damage) {
         // grip low: drop lance (IF target hit, lance cannot break)
         if (combatantPerformance.grip > 10) {
-        // console.log(combatant.name + " broke their lance! 5 more points!")
+        console.log(combatant.name + " broke their lance! 5 more points!")
         points += 5 
         }
     }
@@ -129,10 +129,10 @@ function combat(combatant: Knight): combatantPerformance {
         grip: roll(combatant.grip) + Math.floor(modifier(fanciness)/2),
         fanciness
     }
-    // console.log (combatant.name + " rolled a " + performance.strength + " on strength (" + modifier(performance.strength)+ ")")
-    // console.log (combatant.name + " rolled a " + performance.accuracy + " on accuracy (" + modifier(performance.accuracy)+ ")")
-    // console.log (combatant.name + " rolled a " + performance.grip + " on grip (" + modifier(performance.grip)+ ")")
-    // console.log (combatant.name + " rolled a " + performance.fanciness + " on fanciness (" + modifier(performance.fanciness)+ ")")
+    console.log (combatant.name + " rolled a " + performance.strength + " on strength (" + modifier(performance.strength)+ ")")
+    console.log (combatant.name + " rolled a " + performance.accuracy + " on accuracy (" + modifier(performance.accuracy)+ ")")
+    console.log (combatant.name + " rolled a " + performance.grip + " on grip (" + modifier(performance.grip)+ ")")
+    console.log (combatant.name + " rolled a " + performance.fanciness + " on fanciness (" + modifier(performance.fanciness)+ ")")
     return performance
 }
 
@@ -145,12 +145,11 @@ function modifier(stat: number): number {
 }
 
 export function doIt(): void {
-    // const knight1 = newKnight("frank")
-    // console.log(knight1)
-    // const knight2 = newKnight("timmy")
-    // console.log(knight2)
-    // joust(knight1, knight2)
-    cull(1048576, 16)
+    for (let i = 0; i <= 7; i++){
+        console.log("JOUST NUMBER: " + (i + 1))
+        joust(combatants[i], combatants[(combatants.length - 1) - i])
+    }
+    // cull(1048576, 16)
 }
 
 doIt()
